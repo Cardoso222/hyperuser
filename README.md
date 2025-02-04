@@ -164,7 +164,7 @@ npm start
 
 1. Build and start all services:
 ```bash
-docker-compose up -d --build
+docker-compose up -d
 ```
 
 ## Project Structure
@@ -179,8 +179,8 @@ docker-compose up -d --build
 │   │   ├── services/       # Business logic
 │   │   ├── utils/          # Utilities and helpers
 │   │   │   ├── messageQueue.js    # RabbitMQ integration
-│   │   │   ├── websocket.js      # Socket.IO setup
-│   │   │   └── logger.js         # Winston logger
+│   │   │   ├── websocket.js      # socket.IO setup
+│   │   │   └── logger.js         # logger w/ Winston
 │   │   ├── middleware/     # Express middleware
 │   │   └── __tests__/      # Test files
 │   ├── package.json
