@@ -2,4 +2,4 @@ node_modules/
 combined.log
 .env
 error.log
-coverage/
+../coverage/

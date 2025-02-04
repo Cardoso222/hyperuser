@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "jest --coverage",
+    "test": "jest --config jest.config.js",
     "lint": "eslint ."
   },
   "dependencies": {

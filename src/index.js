@@ -7,7 +7,6 @@ const { errorHandler } = require('./middleware/errorHandler');
 const logger = require('./utils/logger');
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use('/api', routes);
@@ -24,13 +23,20 @@ const startServer = async () => {
 
     global.redisClient = redisClient;
 
-    app.listen(port, () => {
-      logger.info(`Server is running on port ${port}`);
-    });
+    if (require.main === module) {
+      const port = process.env.PORT || 3000;
+      app.listen(port, () => {
+        logger.info(`Server is running on port ${port}`);
+      });
+    }
   } catch (error) {
     logger.error('Failed to start server:', error);
     process.exit(1);
   }
 };
 
-startServer(); 
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = { app, startServer }; 
