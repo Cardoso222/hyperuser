@@ -2,6 +2,10 @@
 
 A professional full-stack application built with Node.js, Express, MongoDB, Redis, RabbitMQ, and React. This project demonstrates best practices in building scalable microservices with modern technologies.
 
+### Preview
+<img width="868" alt="image" src="https://github.com/user-attachments/assets/c07b8b27-d6e8-4163-9c32-259c060a1e29" />
+
+
 ## Features
 
 - RESTful API for user management (CRUD operations)
@@ -123,6 +127,10 @@ Redis is used to cache:
 Cache is automatically invalidated on user updates and deletions.
 
 ## Testing
+
+### 
+### Coverage
+<img width="618" alt="image" src="https://github.com/user-attachments/assets/fddd93f5-6384-4964-8d03-e979e4be55de" />
 
 Run the test suites:
 
