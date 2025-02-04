@@ -5,8 +5,22 @@ const { createClient } = require('redis');
 const routes = require('./routes');
 const { errorHandler } = require('./middleware/errorHandler');
 const logger = require('./utils/logger');
-const app = express();
+const cors = require('cors');
+const { createServer } = require('http');
+const { initializeWebSocket } = require('./utils/websocket');
 
+const app = express();
+const server = createServer(app);
+
+const corsOptions = {
+  origin: [process.env.FRONTEND_URL],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/api', routes);
 app.use(errorHandler);
@@ -22,9 +36,11 @@ const startServer = async () => {
 
     global.redisClient = redisClient;
 
+    initializeWebSocket(server);
+
     if (require.main === module) {
       const port = process.env.PORT || 3000;
-      app.listen(port, () => {
+      server.listen(port, () => {
         logger.info(`Server is running on port ${port}`);
       });
     }
@@ -38,4 +54,4 @@ if (require.main === module) {
   startServer();
 }
 
-module.exports = { app, startServer }; 
+module.exports = { app, server, startServer }; 

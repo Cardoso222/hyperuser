@@ -1,6 +1,6 @@
 # HyperUser
 
-A professional backend service built with Node.js, Express, MongoDB, Redis, and RabbitMQ. This project demonstrates best practices in building scalable microservices with modern technologies.
+A professional full-stack application built with Node.js, Express, MongoDB, Redis, RabbitMQ, and React. This project demonstrates best practices in building scalable microservices with modern technologies.
 
 ## Features
 
@@ -8,19 +8,33 @@ A professional backend service built with Node.js, Express, MongoDB, Redis, and 
 - MongoDB for persistent storage
 - Redis for caching
 - RabbitMQ for event-driven architecture
+- Real-time event monitoring dashboard
+  - Live WebSocket updates
+  - API endpoint tracking
+  - Request/Response monitoring
+  - Color-coded event types
 - Docker Compose for easy deployment
 - Comprehensive test suite
 - Error handling and logging
 
 ## Tech Stack
 
+### Backend
 - Node.js & Express.js
 - MongoDB (Database)
 - Redis (Caching)
 - RabbitMQ (Message Queue)
+- Socket.IO (Real-time WebSocket)
 - Docker & Docker Compose
 - Jest & Supertest (Testing)
 - Winston (Logging)
+
+### Frontend
+- React
+- Material-UI (MUI)
+- Socket.IO Client
+- React Router
+- Axios
 
 ## Prerequisites
 
@@ -36,17 +50,22 @@ git clone <repository-url>
 cd hyperuser
 ```
 
-2. Copy the environment file:
+2. Copy the environment files:
 ```bash
-cp .env.example .env
+# Backend
+cp api/.env.example api/.env
+
+# Frontend
+cp frontend/.env.example frontend/.env
 ```
 
-3. Start the services using Docker Compose:
+3. Start all services using Docker Compose:
 ```bash
 docker-compose up -d
 ```
 
 The API will be available at `http://localhost:3000`.
+The frontend will be available at `http://localhost:3001`.
 
 ## API Endpoints
 
@@ -71,10 +90,26 @@ The API will be available at `http://localhost:3000`.
 - **DELETE /api/users/:id**
   - Delete user
 
-## Event Publishing
+## Event System
 
-The service publishes the following events to RabbitMQ:
+### WebSocket Events
+The application provides real-time monitoring of system events through WebSocket connections. Events are displayed in a live dashboard showing:
 
+- Event Type
+- HTTP Method
+- API Endpoint
+- Request Payload
+- Response Data
+- Timestamp
+
+### Event Types
+All events are color-coded for better visibility:
+- `user.created` (Green) - When a new user is created
+- `user.updated` (Yellow) - When a user is updated
+- `user.deleted` (Red) - When a user is deleted
+
+### Message Queue Events
+RabbitMQ handles the following events:
 - `user.created`: When a new user is created
 - `user.updated`: When a user is updated
 - `user.deleted`: When a user is deleted
@@ -89,55 +124,78 @@ Cache is automatically invalidated on user updates and deletions.
 
 ## Testing
 
-Run the test suite:
+Run the test suites:
 
 ```bash
+# Backend tests
+cd api
+npm test
+
+# Frontend tests
+cd frontend
 npm test
 ```
-
-This will run unit tests and integration tests using Jest.
 
 ## Development
 
 1. Install dependencies:
 ```bash
+# Backend
+cd api
+npm install
+
+# Frontend
+cd frontend
 npm install
 ```
 
-2. Start development server:
+2. Start development servers:
 ```bash
+# Backend
+cd api
 npm run dev
+
+# Frontend
+cd frontend
+npm start
 ```
 
 ## Production Deployment
 
-1. Build the Docker image:
+1. Build and start all services:
 ```bash
-docker-compose build
-```
-
-2. Start the services:
-```bash
-docker-compose -f docker-compose.yml up -d
+docker-compose up -d --build
 ```
 
 ## Project Structure
 
 ```
 .
-├── src/
-│   ├── controllers/     # Request handlers
-│   ├── models/         # Database models
-│   ├── routes/         # API routes
-│   ├── services/       # Business logic
-│   ├── utils/          # Utilities and helpers
-│   ├── middleware/     # Express middleware
-│   └── __tests__/      # Test files
-├── docker-compose.yml
-├── Dockerfile
-└── package.json
+├── api/                  # Backend application
+│   ├── src/
+│   │   ├── controllers/     # Request handlers
+│   │   ├── models/         # Database models
+│   │   ├── routes/         # API routes
+│   │   ├── services/       # Business logic
+│   │   ├── utils/          # Utilities and helpers
+│   │   │   ├── messageQueue.js    # RabbitMQ integration
+│   │   │   ├── websocket.js      # Socket.IO setup
+│   │   │   └── logger.js         # Winston logger
+│   │   ├── middleware/     # Express middleware
+│   │   └── __tests__/      # Test files
+│   ├── package.json
+│   └── Dockerfile.api
+├── frontend/            # Frontend application
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   │   └── EventsDisplay.js  # Real-time event monitor
+│   │   ├── pages/         # Page components
+│   │   ├── services/      # API and WebSocket services
+│   │   └── App.js         # Main application
+│   ├── package.json
+│   └── Dockerfile
+└── docker-compose.yml   # Docker services configuration
 ```
-
 
 ## License
 

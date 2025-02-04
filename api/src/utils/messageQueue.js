@@ -1,5 +1,6 @@
 const amqp = require('amqplib');
 const logger = require('./logger');
+const { emitEvent } = require('./websocket');
 
 let channel;
 
@@ -26,6 +27,9 @@ async function publishUserEvent(routingKey, data) {
       routingKey,
       Buffer.from(JSON.stringify(data))
     );
+    
+    // Emit the event through WebSocket
+    emitEvent(routingKey, data);
     
     logger.info(`Event published: ${routingKey}`);
   } catch (error) {

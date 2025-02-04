@@ -1,18 +1,33 @@
 version: '3.8'
 
 services:
-  app:
-    build: .
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.api
     ports:
       - "3000:3000"
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/hyperuser
       - REDIS_URL=redis://redis:6379
       - RABBITMQ_URL=amqp://rabbitmq:5672
+      - FRONTEND_URL=http://localhost:3001
     depends_on:
       - mongodb
       - redis
       - rabbitmq
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - REACT_APP_API_URL=http://localhost:3000
+      - REACT_APP_SOCKET_URL=http://localhost:3000
+    depends_on:
+      - api
 
   mongodb:
     image: mongo:latest
