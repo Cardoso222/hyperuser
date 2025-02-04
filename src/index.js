@@ -5,7 +5,6 @@ const { createClient } = require('redis');
 const routes = require('./routes');
 const { errorHandler } = require('./middleware/errorHandler');
 const logger = require('./utils/logger');
-
 const app = express();
 
 app.use(express.json());

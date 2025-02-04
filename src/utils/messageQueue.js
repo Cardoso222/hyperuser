@@ -40,5 +40,6 @@ connectQueue().catch(error => {
 });
 
 module.exports = {
-  publishUserEvent
+  publishUserEvent,
+  connectQueue
 }; 
